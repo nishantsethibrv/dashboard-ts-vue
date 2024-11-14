@@ -1,11 +1,17 @@
-import { createRouter, createWebHistory } from "vue-router";
-import Login from "../components/Login.vue";
-import Dashboard from "../components/Dashboard.vue"; // Create this component for demonstration
-import { useAuthStore } from "../store/auth";
+import { createRouter, createWebHistory } from 'vue-router';
+import Login from '../components/Login.vue';
+import Dashboard from '../components/Dashboard.vue';
+import { useUserStore } from '../store/user';
+import Profile from '../components/Profile.vue';
 
 const routes = [
-  { path: "/", component: Dashboard, meta: { requiresAuth: true } },
-  { path: "/login", component: Login },
+  { path: '/login', component: Login },
+  { path: '/dashboard', component: Dashboard },
+  {
+    path: '/profile',
+    name: 'Profile',
+    component: Profile
+  },
 ];
 
 const router = createRouter({
@@ -14,9 +20,9 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const authStore = useAuthStore();
-  if (to.meta.requiresAuth && !authStore.user) {
-    next("/login");
+  const userStore = useUserStore();
+  if (to.path === '/dashboard' && !userStore.userId) {
+    next('/login');
   } else {
     next();
   }

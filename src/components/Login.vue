@@ -1,29 +1,29 @@
 <template>
-  <div class="flex h-screen items-center justify-center">
-    <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-80">
-      <h2 class="text-2xl font-bold mb-4 text-center">Login</h2>
-      <form @submit.prevent="handleLogin">
+   <div class="flex items-center justify-center min-h-screen bg-gray-100">
+    <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+      <h2 class="text-2xl font-semibold text-center text-gray-700 mb-6">Login</h2>
+      <form @submit.prevent="login">
         <div class="mb-4">
-          <label class="block text-gray-700 text-sm font-bold mb-2">Username</label>
           <input
-            v-model="username"
-            type="text"
-            placeholder="Enter username"
-            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            v-model="email"
+            type="email"
+            placeholder="Email"
+            required
+            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
         <div class="mb-6">
-          <label class="block text-gray-700 text-sm font-bold mb-2">Password</label>
           <input
             v-model="password"
             type="password"
-            placeholder="Enter password"
-            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            placeholder="Password"
+            required
+            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
         <button
           type="submit"
-          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
+          class="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition duration-200"
         >
           Login
         </button>
@@ -34,22 +34,20 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import { useAuthStore } from '@/store';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../firebaseConfig';
+import { useRouter } from 'vue-router';
 
-const authStore = useAuthStore();
-const username = ref('');
+const email = ref('');
 const password = ref('');
+const router = useRouter();
 
-function handleLogin() {
-  if (username.value && password.value) {
-    authStore.login();
-    alert('Login Successful!');
-  } else {
-    alert('Please enter both username and password.');
+async function login() {
+  try {
+    await signInWithEmailAndPassword(auth, email.value, password.value);
+    router.push('/dashboard');
+  } catch (error) {
+    console.error("Error logging in:", error);
   }
 }
 </script>
-
-<style scoped>
-/* Optional additional styles */
-</style>

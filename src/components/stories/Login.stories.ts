@@ -1,11 +1,11 @@
 import Login from '../Login.vue';
 
 export default {
-  title: 'Components/Login',
+  title: 'Login',
   component: Login,
 };
 
-const Template = (args: any) => ({
+const Template = (args: { [key: string]: any }) => ({
   components: { Login },
   setup() {
     return { args };
@@ -13,8 +13,6 @@ const Template = (args: any) => ({
   template: '<Login v-bind="args" />',
 });
 
+// Define the Default story
 export const Default = Template.bind({});
-// Default.args = {user: {
-//   uid: '12345',
-//   email: 'user@example.com',
-// },};
+Default.args = {};  

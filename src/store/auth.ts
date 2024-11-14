@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { auth } from '@/firebaseConfig';
+import { auth } from '../firebaseConfig';
 import { signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth';
 
 export const useAuth = defineStore('auth', {
